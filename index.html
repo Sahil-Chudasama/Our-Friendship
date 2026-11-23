@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our-Friendship</title>
+
+    <!-- Social Media Link Share Preview -->
+    <meta property="title" content="Our-Friendship">
+    <meta property="description" content="A special delivery waiting for you...">
+    <meta property="og:title" content="Our-Friendship">
+    <meta property="og:description" content="A special delivery waiting for you...">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff2a5f;
+            --secondary-color: #ff758f;
+            --bg-light: #fff0f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #ffe4e1 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- STAGE 1: MAILBOX SCENE --- */
+        .mailbox-stage {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .mailbox-stage.fade-away {
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+        }
+
+        .mailbox-wrapper {
+            position: relative;
+            width: 280px;
+            height: 260px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mailbox-post {
+            position: absolute;
+            bottom: 0;
+            left: 155px;
+            width: 26px;
+            height: 115px;
+            background: linear-gradient(90deg, #8d5524 0%, #a96a38 50%, #6f4019 100%);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 1;
+        }
+
+        .mailbox-flag {
+            position: absolute;
+            top: 22px;
+            right: 52px;
+            width: 8px;
+            height: 58px;
+            background: #334155;
+            border-radius: 4px;
+            transform-origin: bottom center;
+            transform: rotate(0deg);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+
+        .mailbox-flag::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 6px;
+            width: 34px;
+            height: 22px;
+            background: var(--primary-color);
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 3px 8px rgba(255, 42, 95, 0.4);
+        }
+
+        .mailbox-wrapper.opened .mailbox-flag {
+            transform: rotate(75deg);
+        }
+
+        .mailbox-body {
+            position: absolute;
+            top: 65px;
+            left: 48px;
+            width: 195px;
+            height: 105px;
+            background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
+            border-radius: 52px 52px 12px 12px;
+            box-shadow: 0 15px 30px rgba(255, 42, 95, 0.3);
+            z-index: 3;
+            border: 3px solid #ffffff;
+            cursor: pointer;
+        }
+
+        .mailbox-interior {
+            position: absolute;
+            top: 68px;
+            left: 48px;
+            width: 82px;
+            height: 99px;
+            background: #4a0e1c;
+            border-radius: 50px 50px 8px 8px;
+            z-index: 4;
+            overflow: visible;
+        }
+
+        .mailbox-door {
+            position: absolute;
+            top: 65px;
+            left: 46px;
+            width: 86px;
+            height: 105px;
+            background: linear-gradient(180deg, #ff8fa3 0%, #ff2a5f 100%);
+            border: 3px solid #ffffff;
+            border-radius: 52px 52px 10px 10px;
+            z-index: 6;
+            transform-origin: top center;
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 2px 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .mailbox-wrapper.opened .mailbox-door {
+            transform: rotateX(145deg) translateY(-12px);
+        }
+
+        .mini-letter {
+            position: absolute;
+            top: 22px;
+            left: 12px;
+            width: 88px;
+            height: 58px;
+            background: #fff0f3;
+            border: 2px solid #ff2a5f;
+            border-radius: 8px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+            z-index: 5;
+            opacity: 0;
+            transform: translateX(15px) scale(0.7);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            cursor: pointer;
+        }
+
+        .mini-letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 42px solid transparent;
+            border-right: 42px solid transparent;
+            border-top: 30px solid #ffb3c1;
+        }
+
+        .mailbox-wrapper.opened .mini-letter {
+            opacity: 1;
+            transform: translateX(-48px) translateY(8px) rotate(-8deg) scale(1);
+            animation: miniLetterShake 1.1s ease-in-out infinite 0.75s;
+        }
+
+        @keyframes miniLetterShake {
+            0%, 100% { transform: translateX(-48px) translateY(8px) rotate(-8deg) scale(1); }
+            20% { transform: translateX(-48px) translateY(4px) rotate(-14deg) scale(1.06); }
+            40% { transform: translateX(-48px) translateY(8px) rotate(-2deg) scale(1.06); }
+            60% { transform: translateX(-48px) translateY(5px) rotate(-12deg) scale(1.04); }
+            80% { transform: translateX(-48px) translateY(8px) rotate(-4deg) scale(1.02); }
+        }
+
+        .status-caption {
+            margin-top: 22px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 0 2px 10px rgba(255, 42, 95, 0.18);
+            animation: pulseText 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: translateY(0); opacity: 0.9; }
+            50% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        /* --- STAGE 2: CENTER ENVELOPE & QR PULL-UP --- */
+        .envelope-stage {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #ffe4e1 100%);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .envelope-stage.active {
+            display: flex;
+            animation: fadeInModal 0.4s ease forwards;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .big-envelope-wrapper {
+            position: relative;
+            width: 310px;
+            height: 200px;
+            margin-top: 20px;
+            overflow: visible;
+            perspective: 800px; /* Provides realistic 3D flap flip */
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            animation: popCenter 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .big-envelope-wrapper.hidden-env {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes popCenter {
+            0% { transform: scale(0.35) translateY(35px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* Envelope Back Base - Clean Rectangle Shape */
+        .env-back {
+            position: absolute;
+            inset: 0;
+            background: #e65275;
+            border-radius: 8px;
+            box-shadow: 0 18px 40px rgba(255, 42, 95, 0.25);
+            z-index: 1;
+        }
+
+        /* Top Flap (Flips upward and stays visible behind envelope) */
+        .env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 155px solid transparent;
+            border-right: 155px solid transparent;
+            border-top: 110px solid #ff2a5f;
+            transform-origin: top center;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .big-envelope-wrapper.flap-opened .env-flap {
+            transform: rotateX(180deg);
+            z-index: 0; /* Flips behind the main envelope body */
+        }
+
+        /* Front Pocket */
+        .env-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 310px;
+            height: 200px;
+            background: linear-gradient(180deg, #ff8fa3 0%, #ff758f 100%);
+            border-radius: 0 0 8px 8px;
+            clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Circle "Friendship" Wax Seal */
+        .friendship-seal {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 7;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 30%, #ff4d6d 0%, #d90429 65%, #800f2f 100%);
+            color: #ffffff;
+            border: 3px solid #ffd166;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.00rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.3),
+                inset 0 2px 5px rgba(255, 255, 255, 0.45),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .friendship-seal::before {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(255, 209, 102, 0.65);
+            pointer-events: none;
+        }
+
+        .friendship-seal:hover {
+            transform: translateX(-50%) scale(1.06);
+        }
+
+        .friendship-seal.breaking {
+            animation: sealBreakAnim 0.65s ease-in-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes sealBreakAnim {
+            0% { transform: translateX(-50%) rotate(0deg) scale(1); opacity: 1; }
+            20% { transform: translateX(-50%) rotate(-12deg) scale(1.15); }
+            40% { transform: translateX(-50%) rotate(12deg) scale(1.15); }
+            60% { transform: translateX(-50%) rotate(-10deg) scale(1.1); opacity: 0.85; }
+            80% { transform: translateX(-50%) rotate(8deg) scale(0.9); opacity: 0.4; }
+            100% { transform: translateX(-50%) scale(0.4); opacity: 0; }
+        }
+
+        /* --- SQUARE QR CODE PNG --- */
+        .qr-card {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            width: 190px;
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 12px;
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.35s ease;
+            touch-action: none;
+        }
+
+        /* Peek top portion of QR code when flap opens */
+        .big-envelope-wrapper.flap-opened .qr-card.peek-20 {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(-50px);
+            z-index: 3;
+            cursor: grab;
+        }
+
+        .big-envelope-wrapper.flap-opened .qr-card.peek-20:active {
+            cursor: grabbing;
+        }
+
+        /* Full center display after dragging upward */
+        .qr-card.full-center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            opacity: 1;
+            pointer-events: auto;
+            width: auto;
+            max-width: 85vw;
+            padding: 16px;
+            transform: translate(-50%, -50%) !important;
+            z-index: 999 !important;
+            cursor: default;
+        }
+
+        .qr-card img {
+            width: 174px;
+            height: 174px;
+            max-width: 72vw;
+            max-height: 72vw;
+            aspect-ratio: 1 / 1;
+            display: block;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+        }
+
+        .qr-card.full-center img {
+            width: 220px;
+            height: 220px;
+        }
+
+        .qr-label {
+            display: none;
+            margin-top: 12px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .qr-card.full-center .qr-label {
+            display: block;
+        }
+
+        .download-png-btn {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(255, 42, 95, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .download-png-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(255, 42, 95, 0.35);
+        }
+
+        .download-png-btn:active {
+            transform: scale(0.96);
+        }
+
+        .qr-card.full-center .download-png-btn {
+            display: inline-block;
+        }
+
+        .env-instruction {
+            position: relative;
+            z-index: 10;
+            margin-top: 65px;
+            color: var(--primary-color);
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            animation: pulseText 1.6s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STAGE 1: MAILBOX -->
+    <div id="mailboxStage" class="mailbox-stage">
+        <div id="mailboxWrapper" class="mailbox-wrapper">
+            <div class="mailbox-flag"></div>
+            <div class="mailbox-body" onclick="openMailbox()"></div>
+            <div class="mailbox-interior">
+                <div id="miniLetter" class="mini-letter" onclick="openCenterEnvelope(event)"></div>
+            </div>
+            <div class="mailbox-door" onclick="openMailbox()"></div>
+            <div class="mailbox-post"></div>
+        </div>
+        <div id="mailboxCaption" class="status-caption">Your letter is waiting in mailbox</div>
+    </div>
+
+    <!-- STAGE 2: CENTER ENVELOPE & PULL-UP QR -->
+    <div id="envelopeStage" class="envelope-stage">
+        <div id="bigEnvelope" class="big-envelope-wrapper" onclick="handleEnvelopeTap()">
+            <div class="env-back"></div>
+            <div class="env-flap"></div>
+
+            <!-- QR Code PNG -->
+            <div id="qrCard" class="qr-card">
+                <img id="qrImage" src="raw/qr_code.png" alt="Scan me" draggable="false">
+                <div class="qr-label">Scan me</div>
+                <button id="downloadPngBtn" class="download-png-btn" type="button" onclick="downloadQrPng(event)">Download QR</button>
+            </div>
+
+            <div class="env-pocket"></div>
+
+            <!-- Circle Friendship Seal -->
+            <div id="friendshipSeal" class="friendship-seal" onclick="breakFriendshipSeal(event)">
+                Friendship
+            </div>
+        </div>
+
+        <div id="envInstruction" class="env-instruction">Tap seal to break it</div>
+    </div>
+
+    <script>
+        let isMailboxOpened = false;
+        let isSealBroken = false;
+        let isFlapOpened = false;
+        let isQrPulled = false;
+
+        history.replaceState({ stage: "initial" }, "", "");
+
+        function pushStageState(stageName) {
+            history.pushState({ stage: stageName }, "", "");
+        }
+
+        function resetToMailboxStage() {
+            const mailboxStage = document.getElementById("mailboxStage");
+            const envelopeStage = document.getElementById("envelopeStage");
+            const bigEnvelope = document.getElementById("bigEnvelope");
+            const qrCard = document.getElementById("qrCard");
+            const seal = document.getElementById("friendshipSeal");
+            const instruction = document.getElementById("envInstruction");
+
+            isSealBroken = false;
+            isFlapOpened = false;
+            isQrPulled = false;
+
+            bigEnvelope.classList.remove("hidden-env", "flap-opened");
+            qrCard.classList.remove("peek-20", "full-center");
+            qrCard.style.transform = "";
+            seal.classList.remove("breaking");
+            seal.style.display = "flex";
+            instruction.style.display = "block";
+            instruction.innerText = 'Tap seal to break it';
+
+            envelopeStage.classList.remove("active");
+            mailboxStage.style.display = "flex";
+            requestAnimationFrame(() => {
+                mailboxStage.classList.remove("fade-away");
+            });
+        }
+
+        function resetToEnvelopePeek() {
+            const bigEnvelope = document.getElementById("bigEnvelope");
+            const qrCard = document.getElementById("qrCard");
+            const instruction = document.getElementById("envInstruction");
+
+            isQrPulled = false;
+            bigEnvelope.classList.remove("hidden-env");
+            bigEnvelope.classList.add("flap-opened");
+            qrCard.classList.remove("full-center");
+            qrCard.classList.add("peek-20");
+            qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+            instruction.style.display = "block";
+            instruction.innerText = "Pull out";
+            enableQrPullGesture();
+        }
+
+        window.addEventListener("popstate", (event) => {
+            const stage = event.state && event.state.stage;
+
+            if (isQrPulled) {
+                resetToEnvelopePeek();
+            } else if (document.getElementById("envelopeStage").classList.contains("active")) {
+                resetToMailboxStage();
+            } else if (!stage || stage === "initial") {
+                const wrapper = document.getElementById("mailboxWrapper");
+                const caption = document.getElementById("mailboxCaption");
+                isMailboxOpened = false;
+                wrapper.classList.remove("opened");
+                caption.innerText = "Your letter is waiting in mailbox";
+            }
+        });
+
+        function openMailbox() {
+            if (isMailboxOpened) return;
+            isMailboxOpened = true;
+            pushStageState("mailbox-opened");
+
+            const wrapper = document.getElementById("mailboxWrapper");
+            const caption = document.getElementById("mailboxCaption");
+
+            wrapper.classList.add("opened");
+            caption.innerText = "Pick The letter";
+        }
+
+        function openCenterEnvelope(event) {
+            event.stopPropagation();
+            if (!isMailboxOpened) {
+                openMailbox();
+                return;
+            }
+
+            pushStageState("envelope-stage");
+
+            const mailboxStage = document.getElementById("mailboxStage");
+            const envelopeStage = document.getElementById("envelopeStage");
+
+            mailboxStage.classList.add("fade-away");
+            setTimeout(() => {
+                mailboxStage.style.display = "none";
+                envelopeStage.classList.add("active");
+            }, 350);
+        }
+
+        function breakFriendshipSeal(event) {
+            event.stopPropagation();
+            if (isSealBroken) return;
+            isSealBroken = true;
+
+            const seal = document.getElementById("friendshipSeal");
+            const instruction = document.getElementById("envInstruction");
+
+            seal.classList.add("breaking");
+            setTimeout(() => {
+                seal.style.display = "none";
+                instruction.innerText = "Open The Envelope";
+            }, 600);
+        }
+
+        function handleEnvelopeTap() {
+            if (!isSealBroken || isFlapOpened) return;
+            isFlapOpened = true;
+
+            const bigEnvelope = document.getElementById("bigEnvelope");
+            const qrCard = document.getElementById("qrCard");
+            const instruction = document.getElementById("envInstruction");
+
+            bigEnvelope.classList.add("flap-opened");
+
+            setTimeout(() => {
+                qrCard.classList.add("peek-20");
+                instruction.innerText = "Pull out";
+                enableQrPullGesture();
+            }, 450);
+        }
+
+        function revealFullQrCard() {
+            if (isQrPulled) return;
+            isQrPulled = true;
+            pushStageState("qr-full");
+
+            const bigEnvelope = document.getElementById("bigEnvelope");
+            const qrCard = document.getElementById("qrCard");
+            const instruction = document.getElementById("envInstruction");
+
+            bigEnvelope.classList.add("hidden-env");
+            qrCard.classList.remove("peek-20");
+            qrCard.classList.add("full-center");
+            instruction.style.display = "none";
+        }
+
+        function downloadQrPng(event) {
+            event.stopPropagation();
+            const img = document.getElementById("qrImage");
+            const link = document.createElement("a");
+            link.href = img.getAttribute("src");
+            link.download = "qr_code.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function enableQrPullGesture() {
+            const qrCard = document.getElementById("qrCard");
+            if (qrCard.dataset.pullBound === "true") return;
+            qrCard.dataset.pullBound = "true";
+
+            let startY = 0;
+            let currentDeltaY = 0;
+            let isDragging = false;
+
+            qrCard.addEventListener("pointerdown", (e) => {
+                if (isQrPulled) return;
+                if (e.target && e.target.closest("#downloadPngBtn")) return;
+                e.stopPropagation();
+                isDragging = true;
+                startY = e.clientY;
+                currentDeltaY = 0;
+                qrCard.style.transition = "none";
+                qrCard.setPointerCapture(e.pointerId);
+            });
+
+            qrCard.addEventListener("pointermove", (e) => {
+                if (!isDragging || isQrPulled) return;
+                currentDeltaY = e.clientY - startY;
+                if (currentDeltaY < 0) {
+                    const pullOffset = Math.max(-50 + currentDeltaY, -180);
+                    qrCard.style.transform = `translateX(-50%) translateY(${pullOffset}px)`;
+                }
+            });
+
+            qrCard.addEventListener("pointerup", () => {
+                if (!isDragging || isQrPulled) return;
+                isDragging = false;
+                qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+
+                if (currentDeltaY <= -45) {
+                    revealFullQrCard();
+                } else {
+                    qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+                }
+            });
+
+            qrCard.addEventListener("pointercancel", () => {
+                if (!isDragging || isQrPulled) return;
+                isDragging = false;
+                qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+            });
+        }
+    </script>
+</body>
+</html>
