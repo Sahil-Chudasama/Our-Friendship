@@ -7,13 +7,13 @@
 
     <!-- Social Media Link Share Preview -->
     <meta property="title" content="Our-Friendship">
-    <meta property="description" content="A special delivery waiting for you...">
+    <meta property="description" content="A special surprise for you...">
     <meta property="og:title" content="Our-Friendship">
-    <meta property="og:description" content="A special delivery waiting for you...">
+    <meta property="og:description" content="A special surprise for you...">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -108,7 +108,8 @@
             transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
         }
 
-        .sparrow-flight-box.fly-in .sparrow-wing {
+        .sparrow-flight-box.fly-in .sparrow-wing,
+        .sparrow-flight-box.fly-out .sparrow-wing {
             animation: wingFlap 0.22s ease-in-out infinite;
         }
 
@@ -118,18 +119,13 @@
         }
 
         .sparrow-flight-box.perched .sparrow-svg {
-            animation: none;
-            transform: scaleX(-1) translateY(0);
+            transform: scaleX(-1);
         }
 
         .sparrow-flight-box.fly-out {
             opacity: 0;
             transform: translate3d(-130vw, 20px, 0);
             transition: transform 3.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease 2.8s;
-        }
-
-        .sparrow-flight-box.fly-out .sparrow-wing {
-            animation: wingFlap 0.22s ease-in-out infinite;
         }
 
         .sparrow-bubble {
@@ -195,7 +191,6 @@
             margin-bottom: -12px;
             z-index: 5;
             cursor: pointer;
-            pointer-events: auto;
         }
 
         .dog-bubble {
@@ -212,7 +207,6 @@
             font-weight: 700;
             white-space: nowrap;
             box-shadow: 0 6px 14px rgba(255, 42, 95, 0.14);
-            transition: transform 0.2s ease;
         }
 
         .dog-bubble::before {
@@ -313,7 +307,7 @@
             height: 225px;
             background: linear-gradient(90deg, #8d5524 0%, #a96a38 50%, #6f4019 100%);
             border-radius: 0 0 12px 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             z-index: 1;
         }
 
@@ -326,7 +320,6 @@
             background: #334155;
             border-radius: 4px;
             transform-origin: bottom center;
-            transform: rotate(0deg);
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2;
         }
@@ -370,7 +363,6 @@
             background: #4a0e1c;
             border-radius: 50px 50px 8px 8px;
             z-index: 4;
-            overflow: visible;
         }
 
         .mailbox-door {
@@ -385,7 +377,7 @@
             z-index: 6;
             transform-origin: top center;
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 2px 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
         }
 
@@ -402,7 +394,7 @@
             background: #fff0f3;
             border: 2px solid #ff2a5f;
             border-radius: 8px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
             z-index: 5;
             opacity: 0;
             transform: translateX(15px) scale(0.7);
@@ -462,9 +454,8 @@
             width: 310px;
             height: 200px;
             margin-top: 20px;
-            overflow: visible;
             perspective: 800px;
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: opacity 0.4s ease;
             animation: popCenter 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -537,7 +528,7 @@
             justify-content: center;
             text-align: center;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.00rem;
+            font-size: 1rem;
             font-weight: 700;
             letter-spacing: 0.4px;
             box-shadow:
@@ -632,9 +623,9 @@
         .qr-label {
             display: none;
             margin-top: 12px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
             color: var(--primary-color);
             text-align: center;
         }
@@ -689,7 +680,7 @@
             50% { transform: translateY(-4px); opacity: 1; }
         }
 
-        /* --- TOP CENTER SUN (100% FIXED & STATIC LIKE DOG) --- */
+        /* --- TOP CENTER SUN --- */
         .sky-sun-bar {
             width: 100%;
             display: flex;
@@ -721,7 +712,6 @@
     </style>
 </head>
 <body>
-
 
     <div class="sky-sun-bar" aria-hidden="true">
         <div class="sky-sun">
@@ -841,8 +831,8 @@
             <div class="env-flap"></div>
             <div id="qrCard" class="qr-card">
                 <img id="qrImage" src="raw/qr_code.png" alt="Scan me" draggable="false">
-                <div class="qr-label">Use Google lens</div>
-                <button id="downloadPngBtn" class="download-png-btn" type="button" onclick="downloadQrPng(event)">Download PNG</button>
+                <div class="qr-label">Use Google lens for scan</div>
+                <button id="downloadPngBtn" class="download-png-btn" type="button" onclick="downloadQrPng(event)">Download QR</button>
             </div>
             <div class="env-pocket"></div>
             <div id="friendshipSeal" class="friendship-seal" onclick="breakFriendshipSeal(event)">
@@ -990,7 +980,7 @@
             seal.classList.remove("breaking");
             seal.style.display = "flex";
             instruction.style.display = "block";
-            instruction.innerText = 'Tap seal to break it';
+            instruction.innerText = "Tap seal to break it";
 
             if (dog) dog.classList.remove("excited", "happy");
             if (dogBubble) dogBubble.innerText = "Letter waiting!";
@@ -1019,7 +1009,6 @@
             qrCard.style.transform = "translateX(-50%) translateY(-50px)";
             instruction.style.display = "block";
             instruction.innerText = "Pull out";
-            enableQrPullGesture();
         }
 
         window.addEventListener("popstate", (event) => {
@@ -1150,9 +1139,14 @@
             let currentDeltaY = 0;
             let isDragging = false;
 
+            function snapBackQrCard() {
+                isDragging = false;
+                qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+            }
+
             qrCard.addEventListener("pointerdown", (e) => {
-                if (isQrPulled) return;
-                if (e.target && e.target.closest("#downloadPngBtn")) return;
+                if (isQrPulled || (e.target && e.target.closest("#downloadPngBtn"))) return;
                 e.stopPropagation();
                 isDragging = true;
                 startY = e.clientY;
@@ -1172,21 +1166,17 @@
 
             qrCard.addEventListener("pointerup", () => {
                 if (!isDragging || isQrPulled) return;
-                isDragging = false;
-                qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-
                 if (currentDeltaY <= -45) {
+                    isDragging = false;
                     revealFullQrCard();
                 } else {
-                    qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+                    snapBackQrCard();
                 }
             });
 
             qrCard.addEventListener("pointercancel", () => {
                 if (!isDragging || isQrPulled) return;
-                isDragging = false;
-                qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-                qrCard.style.transform = "translateX(-50%) translateY(-50px)";
+                snapBackQrCard();
             });
         }
     </script>
