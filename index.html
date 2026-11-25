@@ -767,8 +767,8 @@
             </div>
 
             <div id="sittingDog" class="sitting-dog-box" onclick="handleDogClick(event)">
-                <div id="dogBubble" class="dog-bubble">Letter waiting!</div>
-                <div class="heart-hint">💖</div>
+                <div id="dogBubble" class="dog-bubble">letter is waiting!</div>
+                <div id="dogHeartHint" class="heart-hint">💖</div>
                 <svg class="dog-svg" viewBox="0 0 110 115" xmlns="http://www.w3.org/2000/svg">
                     <g class="dog-tail">
                         <path d="M27 82 Q21 74 24 67" fill="none" stroke="#c97a4b" stroke-width="6.5" stroke-linecap="round"/>
@@ -824,7 +824,7 @@
         </div>
     </div>
 
-    <!-- STAGE 2: CENTER ENVELOPE & PULL-UP QR -->
+    <!-- STAGE 2: CENTER ENVELOPE & QR PULL-UP -->
     <div id="envelopeStage" class="envelope-stage">
         <div id="bigEnvelope" class="big-envelope-wrapper" onclick="handleEnvelopeTap()">
             <div class="env-back"></div>
@@ -843,6 +843,11 @@
     </div>
 
     <script>
+        const DEFAULT_DOG_BUBBLE_TEXT = "letter is waiting!";
+        const SPARROW_PERCH_MS = 2200;
+        const SPARROW_FLY_OUT_MS = 5000;
+        const SPARROW_CYCLE_MS = 10400;
+
         let isMailboxOpened = false;
         let isSealBroken = false;
         let isFlapOpened = false;
@@ -906,7 +911,7 @@
                     }
                     sparrow.classList.remove("fly-in");
                     sparrow.classList.add("perched");
-                }, 2200));
+                }, SPARROW_PERCH_MS));
 
                 sparrowStageTimers.push(setTimeout(() => {
                     if (isMailboxOpened || !sparrowLoopRunning) {
@@ -915,7 +920,7 @@
                     }
                     sparrow.classList.remove("perched");
                     sparrow.classList.add("fly-out");
-                }, 5000));
+                }, SPARROW_FLY_OUT_MS));
 
                 sparrowCycleTimer = setTimeout(() => {
                     if (!isMailboxOpened && sparrowLoopRunning) {
@@ -923,7 +928,7 @@
                     } else {
                         stopSparrowCycle();
                     }
-                }, 10400);
+                }, SPARROW_CYCLE_MS);
             }
 
             runSingleCycle();
@@ -943,8 +948,15 @@
 
             const dog = document.getElementById("sittingDog");
             const dogBubble = document.getElementById("dogBubble");
+            const heartHint = document.getElementById("dogHeartHint");
 
             if (dogHappyTimer) clearTimeout(dogHappyTimer);
+
+            if (heartHint) {
+                heartHint.style.animation = "none";
+                void heartHint.offsetWidth;
+                heartHint.style.animation = "";
+            }
 
             dog.classList.add("happy");
             dogBubble.innerText = "Woof! Woof!";
@@ -952,7 +964,7 @@
             dogHappyTimer = setTimeout(() => {
                 if (!isMailboxOpened) {
                     dog.classList.remove("happy");
-                    dogBubble.innerText = "Letter waiting!";
+                    dogBubble.innerText = DEFAULT_DOG_BUBBLE_TEXT;
                 }
             }, 2500);
         }
@@ -983,7 +995,7 @@
             instruction.innerText = "Tap seal to break it";
 
             if (dog) dog.classList.remove("excited", "happy");
-            if (dogBubble) dogBubble.innerText = "Letter waiting!";
+            if (dogBubble) dogBubble.innerText = DEFAULT_DOG_BUBBLE_TEXT;
 
             envelopeStage.classList.remove("active");
             mailboxStage.style.display = "flex";
@@ -1026,7 +1038,7 @@
                 if (dogHappyTimer) clearTimeout(dogHappyTimer);
                 wrapper.classList.remove("opened");
                 if (dog) dog.classList.remove("excited", "happy");
-                if (dogBubble) dogBubble.innerText = "Letter waiting!";
+                if (dogBubble) dogBubble.innerText = DEFAULT_DOG_BUBBLE_TEXT;
                 startSparrowLoop();
             }
         });
@@ -1119,15 +1131,31 @@
             instruction.style.display = "none";
         }
 
-        function downloadQrPng(event) {
-            event.stopPropagation();
-            const img = document.getElementById("qrImage");
+        function triggerAnchorDownload(href, filename) {
             const link = document.createElement("a");
-            link.href = img.getAttribute("src");
-            link.download = "qr_code.png";
+            link.href = href;
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        async function downloadQrPng(event) {
+            event.stopPropagation();
+            const img = document.getElementById("qrImage");
+            const src = img && img.getAttribute("src");
+            if (!src) return;
+
+            try {
+                const response = await fetch(src);
+                if (!response.ok) throw new Error("Network response was not ok");
+                const blob = await response.blob();
+                const objectUrl = URL.createObjectURL(blob);
+                triggerAnchorDownload(objectUrl, "qr_code.png");
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+            } catch (_) {
+                triggerAnchorDownload(src, "qr_code.png");
+            }
         }
 
         function enableQrPullGesture() {
