@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Our-Friendship</title>
 
     <!-- Social Media Link Share Preview -->
@@ -22,6 +22,7 @@
             --bg-light: #fff0f5;
             --sky-top: #cbeaff;
             --sky-bottom: #eef8ff;
+            --scene-scale: 1;
         }
 
         * {
@@ -32,15 +33,26 @@
             user-select: none;
         }
 
+        html {
+            width: 100%;
+            height: 100%;
+            height: -webkit-fill-available;
+            overflow: hidden;
+        }
+
         body {
             background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 72%, #dff4e4 100%);
             font-family: 'Poppins', sans-serif;
+            width: 100%;
             min-height: 100vh;
+            min-height: 100dvh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
             position: relative;
             transition: background 0.5s ease;
         }
@@ -49,10 +61,24 @@
             background: linear-gradient(135deg, var(--bg-light) 0%, #ffe4e1 100%);
         }
 
+        /* --- AUTO-FIT RESPONSIVE WRAPPER FOR ENTIRE SCENE --- */
+        .responsive-fit-frame {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: scale(var(--scene-scale));
+            transform-origin: center center;
+            transition: transform 0.2s ease-out;
+        }
+
         /* --- STAGE 1: MAILBOX SCENE --- */
         .mailbox-stage {
             position: relative;
             z-index: 10;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -99,7 +125,8 @@
             z-index: 12;
             pointer-events: none;
             opacity: 0;
-            transform: translate3d(55vw, -95px, 0);
+            transform: translate3d(36vw, -60px, 0);
+            will-change: transform, opacity;
         }
 
         .sparrow-flight-box.fly-in {
@@ -124,8 +151,8 @@
 
         .sparrow-flight-box.fly-out {
             opacity: 0;
-            transform: translate3d(-130vw, 20px, 0);
-            transition: transform 3.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease 2.8s;
+            transform: translate3d(-150vw, 20px, 0);
+            transition: transform 3.6s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.45s ease 2.3s;
         }
 
         .sparrow-bubble {
@@ -451,8 +478,8 @@
 
         .big-envelope-wrapper {
             position: relative;
-            width: 310px;
-            height: 200px;
+            width: min(310px, 86vw);
+            height: calc(min(310px, 86vw) * 0.645);
             margin-top: 20px;
             perspective: 800px;
             transition: opacity 0.4s ease;
@@ -465,8 +492,8 @@
         }
 
         @keyframes popCenter {
-            0% { transform: scale(0.35) translateY(35px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
+            0% { transform: scale(0.35) translate3d(0, 35px, 0); opacity: 0; }
+            100% { transform: scale(1) translate3d(0, 0, 0); opacity: 1; }
         }
 
         .env-back {
@@ -484,9 +511,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 155px solid transparent;
-            border-right: 155px solid transparent;
-            border-top: 110px solid #ff2a5f;
+            border-left: calc(min(310px, 86vw) / 2) solid transparent;
+            border-right: calc(min(310px, 86vw) / 2) solid transparent;
+            border-top: calc(min(310px, 86vw) * 0.355) solid #ff2a5f;
             transform-origin: top center;
             transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
@@ -502,8 +529,8 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 310px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(180deg, #ff8fa3 0%, #ff758f 100%);
             border-radius: 0 0 8px 8px;
             clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
@@ -513,12 +540,12 @@
 
         .friendship-seal {
             position: absolute;
-            top: 55px;
+            top: 27.5%;
             left: 50%;
             transform: translateX(-50%);
             z-index: 7;
-            width: 90px;
-            height: 90px;
+            width: clamp(74px, 24vw, 90px);
+            height: clamp(74px, 24vw, 90px);
             border-radius: 50%;
             background: radial-gradient(circle at 32% 30%, #ff4d6d 0%, #d90429 65%, #800f2f 100%);
             color: #ffffff;
@@ -528,7 +555,7 @@
             justify-content: center;
             text-align: center;
             font-family: 'Dancing Script', cursive;
-            font-size: 1rem;
+            font-size: clamp(0.88rem, 2.8vw, 1rem);
             font-weight: 700;
             letter-spacing: 0.4px;
             box-shadow:
@@ -559,10 +586,10 @@
 
         .qr-card {
             position: absolute;
-            top: 45px;
+            top: 22.5%;
             left: 50%;
             transform: translateX(-50%) translateY(0);
-            width: 190px;
+            width: clamp(150px, 50vw, 190px);
             background: #ffffff;
             padding: 8px;
             border-radius: 12px;
@@ -597,6 +624,7 @@
             pointer-events: auto;
             width: auto;
             max-width: 85vw;
+            max-height: 85dvh;
             padding: 16px;
             transform: translate(-50%, -50%) !important;
             z-index: 999 !important;
@@ -604,8 +632,8 @@
         }
 
         .qr-card img {
-            width: 174px;
-            height: 174px;
+            width: clamp(134px, 45vw, 174px);
+            height: clamp(134px, 45vw, 174px);
             max-width: 72vw;
             max-height: 72vw;
             aspect-ratio: 1 / 1;
@@ -616,15 +644,15 @@
         }
 
         .qr-card.full-center img {
-            width: 220px;
-            height: 220px;
+            width: min(220px, 62vw, 42dvh);
+            height: min(220px, 62vw, 42dvh);
         }
 
         .qr-label {
             display: none;
             margin-top: 12px;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: clamp(0.88rem, 3.2vw, 1rem);
             font-weight: 600;
             color: var(--primary-color);
             text-align: center;
@@ -666,10 +694,10 @@
         .env-instruction {
             position: relative;
             z-index: 10;
-            margin-top: 65px;
+            margin-top: clamp(44px, 10dvh, 65px);
             color: var(--primary-color);
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 5.2vw, 1.8rem);
             font-weight: 700;
             text-align: center;
             animation: pulseText 1.6s infinite;
@@ -686,8 +714,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-top: 16px;
-            margin-bottom: 8px;
+            padding-top: 8px;
+            margin-bottom: 6px;
             pointer-events: none;
             z-index: 2;
             transition: opacity 0.4s ease;
@@ -709,118 +737,131 @@
             display: block;
             overflow: visible;
         }
+
+        @media (max-width: 375px) {
+            .dog-bubble {
+                font-size: 1rem;
+                padding: 4px 10px;
+            }
+            .sparrow-bubble {
+                font-size: 1rem;
+                padding: 4px 11px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sky-sun-bar" aria-hidden="true">
-        <div class="sky-sun">
-            <svg class="sun-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <radialGradient id="sunGlowGrad" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#fff3a1"/>
-                        <stop offset="65%" stop-color="#ffd166"/>
-                        <stop offset="100%" stop-color="#ffaa2b"/>
-                    </radialGradient>
-                </defs>
-                <g stroke="#ffbe3b" stroke-width="3" stroke-linecap="round">
-                    <line x1="40" y1="5" x2="40" y2="12"/>
-                    <line x1="40" y1="68" x2="40" y2="75"/>
-                    <line x1="5" y1="40" x2="12" y2="40"/>
-                    <line x1="68" y1="40" x2="75" y2="40"/>
-                    <line x1="15.2" y1="15.2" x2="20.2" y2="20.2"/>
-                    <line x1="59.8" y1="59.8" x2="64.8" y2="64.8"/>
-                    <line x1="64.8" y1="15.2" x2="59.8" y2="20.2"/>
-                    <line x1="20.2" y1="59.8" x2="15.2" y2="64.8"/>
-                </g>
-                <g>
-                    <circle cx="40" cy="40" r="19" fill="url(#sunGlowGrad)"/>
-                    <circle cx="34.5" cy="39.5" r="2.1" fill="#5c3a16"/>
-                    <circle cx="45.5" cy="39.5" r="2.1" fill="#5c3a16"/>
-                    <ellipse cx="31.5" cy="43" rx="2.6" ry="1.4" fill="#ff8fa3" opacity="0.65"/>
-                    <ellipse cx="48.5" cy="43" rx="2.6" ry="1.4" fill="#ff8fa3" opacity="0.65"/>
-                    <path d="M36.5 44.5 Q40 48 43.5 44.5" fill="none" stroke="#5c3a16" stroke-width="1.8" stroke-linecap="round"/>
-                </g>
-            </svg>
+    <div class="responsive-fit-frame" id="responsiveFitFrame">
+        <div class="sky-sun-bar" aria-hidden="true">
+            <div class="sky-sun">
+                <svg class="sun-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="sunGlowGrad" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#fff3a1"/>
+                            <stop offset="65%" stop-color="#ffd166"/>
+                            <stop offset="100%" stop-color="#ffaa2b"/>
+                        </radialGradient>
+                    </defs>
+                    <g stroke="#ffbe3b" stroke-width="3" stroke-linecap="round">
+                        <line x1="40" y1="5" x2="40" y2="12"/>
+                        <line x1="40" y1="68" x2="40" y2="75"/>
+                        <line x1="5" y1="40" x2="12" y2="40"/>
+                        <line x1="68" y1="40" x2="75" y2="40"/>
+                        <line x1="15.2" y1="15.2" x2="20.2" y2="20.2"/>
+                        <line x1="59.8" y1="59.8" x2="64.8" y2="64.8"/>
+                        <line x1="64.8" y1="15.2" x2="59.8" y2="20.2"/>
+                        <line x1="20.2" y1="59.8" x2="15.2" y2="64.8"/>
+                    </g>
+                    <g>
+                        <circle cx="40" cy="40" r="19" fill="url(#sunGlowGrad)"/>
+                        <circle cx="34.5" cy="39.5" r="2.1" fill="#5c3a16"/>
+                        <circle cx="45.5" cy="39.5" r="2.1" fill="#5c3a16"/>
+                        <ellipse cx="31.5" cy="43" rx="2.6" ry="1.4" fill="#ff8fa3" opacity="0.65"/>
+                        <ellipse cx="48.5" cy="43" rx="2.6" ry="1.4" fill="#ff8fa3" opacity="0.65"/>
+                        <path d="M36.5 44.5 Q40 48 43.5 44.5" fill="none" stroke="#5c3a16" stroke-width="1.8" stroke-linecap="round"/>
+                    </g>
+                </svg>
+            </div>
         </div>
-    </div>
 
-    <!-- STAGE 1: MAILBOX -->
-    <div id="mailboxStage" class="mailbox-stage">
-        <div class="stage1-row">
-            <!-- Flying Sparrow -->
-            <div id="sparrowBox" class="sparrow-flight-box">
-                <div class="sparrow-bubble">Sahil made something for you</div>
-                <svg class="sparrow-svg" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="10,28 2,24 4,33" fill="#8d5524"/>
-                    <ellipse cx="26" cy="28" rx="15" ry="10" fill="#c97a4b"/>
-                    <ellipse cx="29" cy="30" rx="9" ry="6.5" fill="#fff5f7"/>
-                    <circle cx="39" cy="20" r="8.5" fill="#d98a5b"/>
-                    <polygon points="47,19 54,21 47,23.5" fill="#f59e0b"/>
-                    <circle cx="41" cy="18.5" r="1.8" fill="#2d1b14"/>
-                    <circle cx="41.5" cy="18" r="0.6" fill="#ffffff"/>
-                    <g class="sparrow-wing">
-                        <ellipse cx="25" cy="23" rx="9" ry="5" transform="rotate(-12 25 23)" fill="#a96a38"/>
-                    </g>
-                    <path d="M23 37 L23 42 M20 42 L26 42 M30 37 L30 42 M27 42 L33 42" stroke="#6f4019" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-            </div>
-
-            <div id="sittingDog" class="sitting-dog-box" onclick="handleDogClick(event)">
-                <div id="dogBubble" class="dog-bubble">letter is waiting!</div>
-                <div id="dogHeartHint" class="heart-hint">💖</div>
-                <svg class="dog-svg" viewBox="0 0 110 115" xmlns="http://www.w3.org/2000/svg">
-                    <g class="dog-tail">
-                        <path d="M27 82 Q21 74 24 67" fill="none" stroke="#c97a4b" stroke-width="6.5" stroke-linecap="round"/>
-                        <circle cx="24" cy="67" r="3.5" fill="#fff5f7"/>
-                    </g>
-                    <ellipse cx="48" cy="82" rx="24" ry="25" fill="#d98a5b"/>
-                    <ellipse cx="52" cy="85" rx="14" ry="18" fill="#fff5f7"/>
-                    <ellipse cx="34" cy="102" rx="11" ry="6.5" fill="#c97a4b"/>
-                    <g class="dog-head-group">
-                        <ellipse cx="43" cy="34" rx="8" ry="17" transform="rotate(18 43 34)" fill="#b86638"/>
-                        <ellipse cx="78" cy="34" rx="8" ry="17" transform="rotate(-18 78 34)" fill="#b86638"/>
-                        <circle cx="61" cy="45" r="22" fill="#e09263"/>
-                        <ellipse cx="64" cy="51" rx="11" ry="8.5" fill="#fff5f7"/>
-                        <circle cx="53" cy="42" r="3" fill="#2d1b14"/>
-                        <circle cx="69" cy="42" r="3" fill="#2d1b14"/>
-                        <circle cx="54" cy="41" r="1" fill="#ffffff"/>
-                        <circle cx="70" cy="41" r="1" fill="#ffffff"/>
-                        <ellipse cx="64" cy="48.5" rx="3.8" ry="2.6" fill="#2d1b14"/>
-                        <path d="M59.5 53.5 Q64 58 68.5 53.5" fill="none" stroke="#2d1b14" stroke-width="2" stroke-linecap="round"/>
-                    </g>
-                    <ellipse cx="54" cy="102" rx="7.5" ry="6" fill="#e09263"/>
-                    <ellipse cx="68" cy="102" rx="7.5" ry="6" fill="#e09263"/>
-                </svg>
-            </div>
-
-            <div id="mailboxWrapper" class="mailbox-wrapper">
-                <div class="mailbox-flag"></div>
-                <div class="mailbox-body" onclick="openMailbox()"></div>
-                <div class="mailbox-interior">
-                    <div id="miniLetter" class="mini-letter" onclick="openCenterEnvelope(event)"></div>
+        <!-- STAGE 1: MAILBOX -->
+        <div id="mailboxStage" class="mailbox-stage">
+            <div class="stage1-row">
+                <!-- Flying Sparrow -->
+                <div id="sparrowBox" class="sparrow-flight-box">
+                    <div class="sparrow-bubble">Sahil made something for you</div>
+                    <svg class="sparrow-svg" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="10,28 2,24 4,33" fill="#8d5524"/>
+                        <ellipse cx="26" cy="28" rx="15" ry="10" fill="#c97a4b"/>
+                        <ellipse cx="29" cy="30" rx="9" ry="6.5" fill="#fff5f7"/>
+                        <circle cx="39" cy="20" r="8.5" fill="#d98a5b"/>
+                        <polygon points="47,19 54,21 47,23.5" fill="#f59e0b"/>
+                        <circle cx="41" cy="18.5" r="1.8" fill="#2d1b14"/>
+                        <circle cx="41.5" cy="18" r="0.6" fill="#ffffff"/>
+                        <g class="sparrow-wing">
+                            <ellipse cx="25" cy="23" rx="9" ry="5" transform="rotate(-12 25 23)" fill="#a96a38"/>
+                        </g>
+                        <path d="M23 37 L23 42 M20 42 L26 42 M30 37 L30 42 M27 42 L33 42" stroke="#6f4019" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
                 </div>
-                <div class="mailbox-door" onclick="openMailbox()"></div>
-                <div class="mailbox-post"></div>
-            </div>
-        </div>
 
-        <!-- GRASS GROUND UNDER DOG & POST -->
-        <div class="grass-ground" aria-hidden="true">
-            <svg class="grass-svg" viewBox="0 0 460 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 18 Q55 10 115 17 T230 16 T345 18 T460 15 L460 56 L0 56 Z" fill="#8fd19e"/>
-                <path d="M0 24 Q70 18 140 25 T280 23 T460 25 L460 56 L0 56 Z" fill="#6ab982"/>
-                <g fill="#57a36e">
-                    <path d="M24 22 L20 11 L28 21 Z"/>
-                    <path d="M36 22 L35 9 L41 21 Z"/>
-                    <path d="M118 22 L114 10 L122 21 Z"/>
-                    <path d="M132 23 L133 12 L138 22 Z"/>
-                    <path d="M255 22 L251 11 L259 21 Z"/>
-                    <path d="M268 22 L269 10 L274 21 Z"/>
-                    <path d="M388 22 L384 11 L392 21 Z"/>
-                    <path d="M402 22 L403 10 L408 21 Z"/>
-                </g>
-            </svg>
+                <div id="sittingDog" class="sitting-dog-box" onclick="handleDogClick(event)">
+                    <div id="dogBubble" class="dog-bubble">letter is waiting!</div>
+                    <div id="dogHeartHint" class="heart-hint">💖</div>
+                    <svg class="dog-svg" viewBox="0 0 110 115" xmlns="http://www.w3.org/2000/svg">
+                        <g class="dog-tail">
+                            <path d="M27 82 Q21 74 24 67" fill="none" stroke="#c97a4b" stroke-width="6.5" stroke-linecap="round"/>
+                            <circle cx="24" cy="67" r="3.5" fill="#fff5f7"/>
+                        </g>
+                        <ellipse cx="48" cy="82" rx="24" ry="25" fill="#d98a5b"/>
+                        <ellipse cx="52" cy="85" rx="14" ry="18" fill="#fff5f7"/>
+                        <ellipse cx="34" cy="102" rx="11" ry="6.5" fill="#c97a4b"/>
+                        <g class="dog-head-group">
+                            <ellipse cx="43" cy="34" rx="8" ry="17" transform="rotate(18 43 34)" fill="#b86638"/>
+                            <ellipse cx="78" cy="34" rx="8" ry="17" transform="rotate(-18 78 34)" fill="#b86638"/>
+                            <circle cx="61" cy="45" r="22" fill="#e09263"/>
+                            <ellipse cx="64" cy="51" rx="11" ry="8.5" fill="#fff5f7"/>
+                            <circle cx="53" cy="42" r="3" fill="#2d1b14"/>
+                            <circle cx="69" cy="42" r="3" fill="#2d1b14"/>
+                            <circle cx="54" cy="41" r="1" fill="#ffffff"/>
+                            <circle cx="70" cy="41" r="1" fill="#ffffff"/>
+                            <ellipse cx="64" cy="48.5" rx="3.8" ry="2.6" fill="#2d1b14"/>
+                            <path d="M59.5 53.5 Q64 58 68.5 53.5" fill="none" stroke="#2d1b14" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+                        <ellipse cx="54" cy="102" rx="7.5" ry="6" fill="#e09263"/>
+                        <ellipse cx="68" cy="102" rx="7.5" ry="6" fill="#e09263"/>
+                    </svg>
+                </div>
+
+                <div id="mailboxWrapper" class="mailbox-wrapper">
+                    <div class="mailbox-flag"></div>
+                    <div class="mailbox-body" onclick="openMailbox()"></div>
+                    <div class="mailbox-interior">
+                        <div id="miniLetter" class="mini-letter" onclick="openCenterEnvelope(event)"></div>
+                    </div>
+                    <div class="mailbox-door" onclick="openMailbox()"></div>
+                    <div class="mailbox-post"></div>
+                </div>
+            </div>
+
+            <!-- GRASS GROUND UNDER DOG & POST -->
+            <div class="grass-ground" aria-hidden="true">
+                <svg class="grass-svg" viewBox="0 0 460 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 18 Q55 10 115 17 T230 16 T345 18 T460 15 L460 56 L0 56 Z" fill="#8fd19e"/>
+                    <path d="M0 24 Q70 18 140 25 T280 23 T460 25 L460 56 L0 56 Z" fill="#6ab982"/>
+                    <g fill="#57a36e">
+                        <path d="M24 22 L20 11 L28 21 Z"/>
+                        <path d="M36 22 L35 9 L41 21 Z"/>
+                        <path d="M118 22 L114 10 L122 21 Z"/>
+                        <path d="M132 23 L133 12 L138 22 Z"/>
+                        <path d="M255 22 L251 11 L259 21 Z"/>
+                        <path d="M268 22 L269 10 L274 21 Z"/>
+                        <path d="M388 22 L384 11 L392 21 Z"/>
+                        <path d="M402 22 L403 10 L408 21 Z"/>
+                    </g>
+                </svg>
+            </div>
         </div>
     </div>
 
@@ -847,6 +888,28 @@
         const SPARROW_PERCH_MS = 2200;
         const SPARROW_FLY_OUT_MS = 5000;
         const SPARROW_CYCLE_MS = 10400;
+
+        /* --- AUTOMATIC SCREEN FIT SCALING (WIDTH + HEIGHT) --- */
+        function fitSceneToViewport() {
+            const frame = document.getElementById("responsiveFitFrame");
+            if (!frame) return;
+
+            const vw = window.innerWidth || document.documentElement.clientWidth || 390;
+            const vh = window.innerHeight || document.documentElement.clientHeight || 844;
+
+            const baseWidth = 360;
+            const baseHeight = 470;
+
+            const scaleX = (vw - 12) / baseWidth;
+            const scaleY = (vh - 16) / baseHeight;
+
+            const targetScale = Math.max(0.62, Math.min(scaleX, scaleY, 1.15));
+            document.documentElement.style.setProperty("--scene-scale", targetScale.toFixed(3));
+        }
+
+        window.addEventListener("resize", fitSceneToViewport, { passive: true });
+        window.addEventListener("orientationchange", () => setTimeout(fitSceneToViewport, 120), { passive: true });
+        fitSceneToViewport();
 
         let isMailboxOpened = false;
         let isSealBroken = false;
@@ -895,7 +958,7 @@
                 sparrow.style.transition = "none";
                 sparrow.classList.remove("fly-in", "perched", "fly-out");
                 sparrow.style.opacity = "0";
-                sparrow.style.transform = "translate3d(55vw, -95px, 0)";
+                sparrow.style.transform = "translate3d(36vw, -60px, 0)";
 
                 void sparrow.offsetWidth;
 
@@ -1001,6 +1064,7 @@
             mailboxStage.style.display = "flex";
             requestAnimationFrame(() => {
                 mailboxStage.classList.remove("fade-away");
+                fitSceneToViewport();
             });
 
             if (!isMailboxOpened) {
