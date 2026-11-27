@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#cbeaff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Our-Friendship</title>
 
     <!-- Social Media Link Share Preview -->
@@ -30,7 +33,9 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         html {
@@ -38,11 +43,13 @@
             height: 100%;
             height: -webkit-fill-available;
             overflow: hidden;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         body {
             background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 72%, #dff4e4 100%);
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             width: 100%;
             min-height: 100vh;
             min-height: 100dvh;
@@ -52,13 +59,17 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+            padding: max(8px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) max(8px, env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
             position: relative;
             transition: background 0.5s ease;
         }
 
         body.stage2-active {
             background: linear-gradient(135deg, var(--bg-light) 0%, #ffe4e1 100%);
+        }
+
+        button, .mailbox-body, .mailbox-door, .mini-letter, .sitting-dog-box, .friendship-seal, .big-envelope-wrapper, .qr-card {
+            outline: none !important;
         }
 
         /* --- AUTO-FIT RESPONSIVE WRAPPER FOR ENTIRE SCENE --- */
@@ -70,8 +81,11 @@
             align-items: center;
             justify-content: center;
             transform: scale(var(--scene-scale));
+            -webkit-transform: scale(var(--scene-scale));
             transform-origin: center center;
+            -webkit-transform-origin: center center;
             transition: transform 0.2s ease-out;
+            will-change: transform;
         }
 
         /* --- STAGE 1: MAILBOX SCENE --- */
@@ -126,12 +140,14 @@
             pointer-events: none;
             opacity: 0;
             transform: translate3d(36vw, -60px, 0);
+            -webkit-transform: translate3d(36vw, -60px, 0);
             will-change: transform, opacity;
         }
 
         .sparrow-flight-box.fly-in {
             opacity: 1;
             transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
             transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
         }
 
@@ -143,15 +159,18 @@
         .sparrow-flight-box.perched {
             opacity: 1;
             transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
         .sparrow-flight-box.perched .sparrow-svg {
             transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
         }
 
         .sparrow-flight-box.fly-out {
             opacity: 0;
             transform: translate3d(-150vw, 20px, 0);
+            -webkit-transform: translate3d(-150vw, 20px, 0);
             transition: transform 3.6s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.45s ease 2.3s;
         }
 
@@ -160,6 +179,7 @@
             top: -42px;
             left: 50%;
             transform: translateX(-50%) scale(0.85);
+            -webkit-transform: translateX(-50%) scale(0.85);
             background: #ffffff;
             color: var(--primary-color);
             border: 2px solid #ff8fa3;
@@ -188,6 +208,7 @@
         .sparrow-flight-box.perched .sparrow-bubble {
             opacity: 1;
             transform: translateX(-50%) scale(1);
+            -webkit-transform: translateX(-50%) scale(1);
         }
 
         .sparrow-svg {
@@ -195,10 +216,12 @@
             height: 44px;
             overflow: visible;
             transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
         }
 
         .sparrow-wing {
             transform-origin: 25px 23px;
+            -webkit-transform-origin: 25px 23px;
         }
 
         @keyframes wingFlap {
@@ -218,6 +241,7 @@
             margin-bottom: -12px;
             z-index: 5;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .dog-bubble {
@@ -288,6 +312,7 @@
 
         .dog-tail {
             transform-origin: 27px 82px;
+            -webkit-transform-origin: 27px 82px;
             animation: tailWag 1.1s ease-in-out infinite;
         }
 
@@ -298,6 +323,7 @@
 
         .dog-head-group {
             transform-origin: 61px 45px;
+            -webkit-transform-origin: 61px 45px;
             transition: transform 0.3s ease;
         }
 
@@ -323,7 +349,11 @@
             justify-content: center;
             align-items: center;
             transform: scale(0.84);
+            -webkit-transform: scale(0.84);
             transform-origin: bottom center;
+            -webkit-transform-origin: bottom center;
+            perspective: 700px;
+            -webkit-perspective: 700px;
         }
 
         .mailbox-post {
@@ -347,6 +377,7 @@
             background: #334155;
             border-radius: 4px;
             transform-origin: bottom center;
+            -webkit-transform-origin: bottom center;
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2;
         }
@@ -379,6 +410,7 @@
             z-index: 3;
             border: 3px solid #ffffff;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .mailbox-interior {
@@ -403,13 +435,19 @@
             border-radius: 52px 52px 10px 10px;
             z-index: 6;
             transform-origin: top center;
+            -webkit-transform-origin: top center;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .mailbox-wrapper.opened .mailbox-door {
             transform: rotateX(145deg) translateY(-12px);
+            -webkit-transform: rotateX(145deg) translateY(-12px);
+            z-index: 2;
         }
 
         .mini-letter {
@@ -425,8 +463,10 @@
             z-index: 5;
             opacity: 0;
             transform: translateX(15px) scale(0.7);
+            -webkit-transform: translateX(15px) scale(0.7);
             transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .mini-letter::before {
@@ -442,6 +482,7 @@
         .mailbox-wrapper.opened .mini-letter {
             opacity: 1;
             transform: translateX(-48px) translateY(8px) rotate(-8deg) scale(1);
+            -webkit-transform: translateX(-48px) translateY(8px) rotate(-8deg) scale(1);
             animation: miniLetterShake 1.1s ease-in-out infinite 0.75s;
         }
 
@@ -457,13 +498,18 @@
         .envelope-stage {
             position: fixed;
             inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             background: linear-gradient(135deg, var(--bg-light) 0%, #ffe4e1 100%);
             z-index: 100;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: max(20px, env(safe-area-inset-top, 20px)) max(16px, env(safe-area-inset-right, 16px)) max(20px, env(safe-area-inset-bottom, 20px)) max(16px, env(safe-area-inset-left, 16px));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .envelope-stage.active {
@@ -482,6 +528,7 @@
             height: calc(min(310px, 86vw) * 0.645);
             margin-top: 20px;
             perspective: 800px;
+            -webkit-perspective: 800px;
             transition: opacity 0.4s ease;
             animation: popCenter 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
@@ -515,13 +562,18 @@
             border-right: calc(min(310px, 86vw) / 2) solid transparent;
             border-top: calc(min(310px, 86vw) * 0.355) solid #ff2a5f;
             transform-origin: top center;
+            -webkit-transform-origin: top center;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .big-envelope-wrapper.flap-opened .env-flap {
             transform: rotateX(180deg);
+            -webkit-transform: rotateX(180deg);
             z-index: 0;
         }
 
@@ -534,6 +586,7 @@
             background: linear-gradient(180deg, #ff8fa3 0%, #ff758f 100%);
             border-radius: 0 0 8px 8px;
             clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
+            -webkit-clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
             z-index: 4;
             pointer-events: none;
         }
@@ -543,6 +596,7 @@
             top: 27.5%;
             left: 50%;
             transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
             z-index: 7;
             width: clamp(74px, 24vw, 90px);
             height: clamp(74px, 24vw, 90px);
@@ -563,11 +617,18 @@
                 inset 0 2px 5px rgba(255, 255, 255, 0.45),
                 inset 0 -4px 8px rgba(0, 0, 0, 0.3);
             cursor: pointer;
+            touch-action: manipulation;
             transition: transform 0.2s ease;
         }
 
-        .friendship-seal:hover {
-            transform: translateX(-50%) scale(1.06);
+        @media (hover: hover) {
+            .friendship-seal:hover {
+                transform: translateX(-50%) scale(1.06);
+            }
+        }
+
+        .friendship-seal:active {
+            transform: translateX(-50%) scale(0.95);
         }
 
         .friendship-seal.breaking {
@@ -589,6 +650,7 @@
             top: 22.5%;
             left: 50%;
             transform: translateX(-50%) translateY(0);
+            -webkit-transform: translateX(-50%) translateY(0);
             width: clamp(150px, 50vw, 190px);
             background: #ffffff;
             padding: 8px;
@@ -608,6 +670,7 @@
             opacity: 1;
             pointer-events: auto;
             transform: translateX(-50%) translateY(-50px);
+            -webkit-transform: translateX(-50%) translateY(-50px);
             z-index: 3;
             cursor: grab;
         }
@@ -627,8 +690,10 @@
             max-height: 85dvh;
             padding: 16px;
             transform: translate(-50%, -50%) !important;
+            -webkit-transform: translate(-50%, -50%) !important;
             z-index: 999 !important;
             cursor: default;
+            touch-action: manipulation;
         }
 
         .qr-card img {
@@ -640,6 +705,7 @@
             display: block;
             object-fit: contain;
             pointer-events: none;
+            -webkit-user-drag: none;
             filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
         }
 
@@ -674,13 +740,16 @@
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
+            touch-action: manipulation;
             box-shadow: 0 6px 14px rgba(255, 42, 95, 0.28);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .download-png-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(255, 42, 95, 0.35);
+        @media (hover: hover) {
+            .download-png-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 8px 18px rgba(255, 42, 95, 0.35);
+            }
         }
 
         .download-png-btn:active {
@@ -884,6 +953,10 @@
     </div>
 
     <script>
+        const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        document.documentElement.classList.add(isIOSDevice ? "is-ios" : "is-android");
+
         const DEFAULT_DOG_BUBBLE_TEXT = "letter is waiting!";
         const SPARROW_PERCH_MS = 2200;
         const SPARROW_FLY_OUT_MS = 5000;
@@ -907,6 +980,10 @@
             document.documentElement.style.setProperty("--scene-scale", targetScale.toFixed(3));
         }
 
+        window.addEventListener("load", () => {
+            fitSceneToViewport();
+            requestAnimationFrame(fitSceneToViewport);
+        });
         window.addEventListener("resize", fitSceneToViewport, { passive: true });
         window.addEventListener("orientationchange", () => setTimeout(fitSceneToViewport, 120), { passive: true });
         fitSceneToViewport();
@@ -1002,7 +1079,9 @@
         history.replaceState({ stage: "initial" }, "", "");
 
         function pushStageState(stageName) {
-            history.pushState({ stage: stageName }, "", "");
+            try {
+                history.pushState({ stage: stageName }, "", "");
+            } catch (_) {}
         }
 
         function handleDogClick(event) {
@@ -1199,6 +1278,7 @@
             const link = document.createElement("a");
             link.href = href;
             link.download = filename;
+            link.rel = "noopener";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1216,7 +1296,7 @@
                 const blob = await response.blob();
                 const objectUrl = URL.createObjectURL(blob);
                 triggerAnchorDownload(objectUrl, "qr_code.png");
-                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1200);
             } catch (_) {
                 triggerAnchorDownload(src, "qr_code.png");
             }
@@ -1224,15 +1304,24 @@
 
         function enableQrPullGesture() {
             const qrCard = document.getElementById("qrCard");
-            if (qrCard.dataset.pullBound === "true") return;
+            if (!qrCard || qrCard.dataset.pullBound === "true") return;
             qrCard.dataset.pullBound = "true";
 
             let startY = 0;
             let currentDeltaY = 0;
             let isDragging = false;
+            let activePointerId = null;
 
-            function snapBackQrCard() {
+            function releaseCaptureSafe(pointerId) {
+                if (pointerId !== null && qrCard.hasPointerCapture && qrCard.hasPointerCapture(pointerId)) {
+                    try { qrCard.releasePointerCapture(pointerId); } catch (_) {}
+                }
+            }
+
+            function snapBackQrCard(pointerId) {
                 isDragging = false;
+                activePointerId = null;
+                releaseCaptureSafe(pointerId);
                 qrCard.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
                 qrCard.style.transform = "translateX(-50%) translateY(-50px)";
             }
@@ -1241,14 +1330,18 @@
                 if (isQrPulled || (e.target && e.target.closest("#downloadPngBtn"))) return;
                 e.stopPropagation();
                 isDragging = true;
+                activePointerId = e.pointerId;
                 startY = e.clientY;
                 currentDeltaY = 0;
                 qrCard.style.transition = "none";
-                qrCard.setPointerCapture(e.pointerId);
+                if (qrCard.setPointerCapture) {
+                    try { qrCard.setPointerCapture(e.pointerId); } catch (_) {}
+                }
             });
 
             qrCard.addEventListener("pointermove", (e) => {
                 if (!isDragging || isQrPulled) return;
+                if (activePointerId !== null && e.pointerId !== activePointerId) return;
                 currentDeltaY = e.clientY - startY;
                 if (currentDeltaY < 0) {
                     const pullOffset = Math.max(-50 + currentDeltaY, -180);
@@ -1256,19 +1349,23 @@
                 }
             });
 
-            qrCard.addEventListener("pointerup", () => {
+            qrCard.addEventListener("pointerup", (e) => {
                 if (!isDragging || isQrPulled) return;
+                if (activePointerId !== null && e.pointerId !== activePointerId) return;
+                const pid = activePointerId;
                 if (currentDeltaY <= -45) {
                     isDragging = false;
+                    activePointerId = null;
+                    releaseCaptureSafe(pid);
                     revealFullQrCard();
                 } else {
-                    snapBackQrCard();
+                    snapBackQrCard(pid);
                 }
             });
 
-            qrCard.addEventListener("pointercancel", () => {
+            qrCard.addEventListener("pointercancel", (e) => {
                 if (!isDragging || isQrPulled) return;
-                snapBackQrCard();
+                snapBackQrCard(e.pointerId);
             });
         }
     </script>
